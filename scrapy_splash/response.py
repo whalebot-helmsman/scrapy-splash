@@ -4,6 +4,7 @@ from __future__ import absolute_import
 import json
 import base64
 import re
+import pdb
 
 from scrapy.http import Response, TextResponse
 from scrapy import Selector
@@ -88,8 +89,25 @@ class SplashTextResponse(_SplashResponseMixin, TextResponse):
 
 
 def _replace_charset(headers):
-    content_type = headers.get(b"Content-Type", b"text/plain; charset=utf-8").split(';')[0]
-    headers[b"Content-Type"] = content_type + b'; charset=utf-8'
+    _CHARSET = b' charset=utf-8'
+    _DETECTOR = re.compile(b'\s*charset\s*=\s*.+')
+
+    content_type = headers.get(b"Content-Type",
+                               b"text/plain; charset=utf-8")
+    before = content_type.split(b';')
+    after = list()
+
+    is_changed = False
+    for part in before:
+        match = _DETECTOR.match(part)
+        if match and match.start()==0 and match.end()==len(part):
+            is_changed = True
+            part=_CHARSET
+        after.append(part)
+
+    if not is_changed:
+        after.append(_CHARSET)
+    headers[b"Content-Type"] = b';'.join(after)
 
 class SplashJsonResponse(SplashResponse):
     """

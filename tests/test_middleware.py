@@ -396,7 +396,7 @@ def test_magic_response2():
         'url': "http://exmaple.com/#id42",
         'body': base64.b64encode(b'\xad').decode('ascii'),
         'headers': [
-            {'name': 'Content-Type', 'value': "text/uuuuu; charset=cp1251"},
+            {'name': 'Content-Type', 'value': "text/uuuuu; charset=cp1251; boundary=1000"},
         ]
     }
     resp = TextResponse("http://mysplash.example.com/execute",
@@ -404,7 +404,7 @@ def test_magic_response2():
                         body=json.dumps(resp_data).encode('utf8'))
 
     resp2 = mw.process_response(req, resp, None)
-    assert resp2.headers == {b'Content-Type': [b'text/uuuuu; charset=utf-8']}
+    assert resp2.headers == {b'Content-Type': [b'text/uuuuu; charset=utf-8; boundary=1000']}
 
 
 def test_unicode_url():
