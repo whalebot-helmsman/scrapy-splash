@@ -388,7 +388,7 @@ def test_magic_response2():
     resp2 = mw.process_response(req, resp, None)
     assert resp2.data == resp_data
     assert resp2.body == b'binary data'
-    assert resp2.headers == {b'Content-Type': [b'text/plain']}
+    assert resp2.headers == {b'Content-Type': [b'text/plain; charset=utf-8']}
     assert resp2.splash_response_headers == {b'Content-Type': [b'application/json']}
     assert resp2.status == resp2.splash_response_status == 200
     assert resp2.url == "http://example.com/"
