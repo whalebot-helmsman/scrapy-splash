@@ -180,7 +180,9 @@ class SplashJsonResponse(SplashResponse):
         # response.body
         if 'body' in self.data:
             self._body = base64.b64decode(self.data['body'])
-            self._cached_ubody = self._body.decode(self.encoding)
+            self._cached_ubody = self._body.decode(TextResponse(url=self.url,
+                                                                headers=self.headers,
+                                                                body=self._body).encoding)
         elif 'html' in self.data:
             self._cached_ubody = self.data['html']
             self._body = self._cached_ubody.encode(self.encoding)
