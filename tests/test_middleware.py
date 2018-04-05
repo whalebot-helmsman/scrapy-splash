@@ -286,6 +286,19 @@ def test_magic_response():
         if c.name == 'spam':
             assert c.value == 'ham'
 
+    resp_data = {
+        'html': '<html><body>Hello</body></html>',
+        'headers': [
+            {'name': 'Content-Type', 'value': "text/html; charset=cp1251"},
+        ],
+    }
+    resp = TextResponse("http://mysplash.example.com/execute",
+                        headers={b'Content-Type': b'application/json'},
+                        body=json.dumps(resp_data).encode('utf8'))
+    resp2 = mw.process_response(req, resp, None)
+    assert resp2.headers == {
+        b'Content-Type': [b'text/html; charset=utf-8'],
+    }
 
 def test_cookies():
     mw = _get_mw()
