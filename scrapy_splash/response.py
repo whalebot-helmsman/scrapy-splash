@@ -87,6 +87,10 @@ class SplashTextResponse(_SplashResponseMixin, TextResponse):
         return _SplashResponseMixin.replace(self, *args, **kwargs)
 
 
+def _replace_charset(headers):
+    content_type = headers.get(b"Content-Type", b"text/plain; charset=utf-8").split(';')[0]
+    headers[b"Content-Type"] = content_type + b'; charset=utf-8'
+
 class SplashJsonResponse(SplashResponse):
     """
     Splash Response with JSON data. It provides a convenient way to access
@@ -183,8 +187,7 @@ class SplashJsonResponse(SplashResponse):
             self._cached_ubody = self._body.decode(TextResponse(url=self.url,
                                                                 headers=self.headers,
                                                                 body=self._body).encoding)
-            content_type = self.headers.get(b"Content-Type", b"text/plain; charset=utf-8").split(b";")[0]
-            self.headers[b"Content-Type"] = content_type + b"; charset=utf-8"
+            _replace_charset(self.headers)
         elif 'html' in self.data:
             self._cached_ubody = self.data['html']
             self._body = self._cached_ubody.encode(self.encoding)
