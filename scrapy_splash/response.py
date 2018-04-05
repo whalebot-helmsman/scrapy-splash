@@ -4,7 +4,6 @@ from __future__ import absolute_import
 import json
 import base64
 import re
-import pdb
 
 from scrapy.http import Response, TextResponse
 from scrapy import Selector
