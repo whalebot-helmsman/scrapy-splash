@@ -313,7 +313,6 @@ def test_magic_response():
 
     resp2 = mw.process_response(req, resp, None)
 
-
 def test_cookies():
     mw = _get_mw()
     cookie_mw = _get_cookie_mw()
@@ -392,6 +391,20 @@ def test_magic_response2():
     assert resp2.splash_response_headers == {b'Content-Type': [b'application/json']}
     assert resp2.status == resp2.splash_response_status == 200
     assert resp2.url == "http://example.com/"
+
+    resp_data = {
+        'url': "http://exmaple.com/#id42",
+        'body': base64.b64encode(b'\xad').decode('ascii'),
+        'headers': [
+            {'name': 'Content-Type', 'value': "text/uuuuu; charset=cp1251"},
+        ]
+    }
+    resp = TextResponse("http://mysplash.example.com/execute",
+                        headers={b'Content-Type': b'application/json'},
+                        body=json.dumps(resp_data).encode('utf8'))
+
+    resp2 = mw.process_response(req, resp, None)
+    assert resp2.headers == {b'Content-Type': [b'text/uuuuu; charset=utf-8']}
 
 
 def test_unicode_url():
