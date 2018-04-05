@@ -16,7 +16,7 @@ function main(splash)
     http_method=splash.args.http_method,
     body=splash.args.body,
   }
-  local wait = tonumber(splash.args.wait or 0.5)  
+  local wait = tonumber(splash.args.wait or 0.5)
   assert(splash:wait(wait))
 
   local entries = splash:history()
@@ -131,7 +131,7 @@ def test_basic_lua(settings):
     assert resp.css('body::text').extract_first().strip() == "hello world!"
     assert resp.data['jsvalue'] == 3
     assert resp.headers['X-MyHeader'] == b'my value'
-    assert resp.headers['Content-Type'] == b'text/html'
+    assert resp.headers['Content-Type'] == b'text/html; charset=utf-8'
     assert resp.splash_response_headers['Content-Type'] == b'application/json'
     assert resp.data['args']['foo'] == 'bar'
 
