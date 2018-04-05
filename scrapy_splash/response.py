@@ -173,6 +173,10 @@ class SplashJsonResponse(SplashResponse):
         if 'url' in self.data:
             self._url = self.data['url']
 
+        # response.headers
+        if 'headers' in self.data:
+            self.headers = headers_to_scrapy(self.data['headers'])
+
         # response.body
         if 'body' in self.data:
             self._body = base64.b64decode(self.data['body'])
@@ -181,7 +185,3 @@ class SplashJsonResponse(SplashResponse):
             self._cached_ubody = self.data['html']
             self._body = self._cached_ubody.encode(self.encoding)
             self.headers[b"Content-Type"] = b"text/html; charset=utf-8"
-
-        # response.headers
-        if 'headers' in self.data:
-            self.headers = headers_to_scrapy(self.data['headers'])

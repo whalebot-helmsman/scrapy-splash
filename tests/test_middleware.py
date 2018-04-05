@@ -230,7 +230,7 @@ def test_magic_response():
     assert resp2.body == b'<html><body>Hello 404</body></html>'
     assert resp2.text == '<html><body>Hello 404</body></html>'
     assert resp2.headers == {
-        b'Content-Type': [b'text/html'],
+        b'Content-Type': [b'text/html; charset=utf-8'],
         b'X-My-Header': [b'foo'],
         b'Set-Cookie': [b'bar=baz'],
     }
